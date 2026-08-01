@@ -1,0 +1,55 @@
+{-------------------------------------------------------------------------------
+  dclMSSQLXDriver -- design-time package for the MSSQLX custom FireDAC driver.
+
+  This is the one you install into the IDE (Component > Install Packages).
+  It is design-only: it contributes the palette registration and pulls in the
+  runtime package, which is where the driver actually lives.
+
+  Installing it also runs FireDAC.Phys.MSSQLX's initialization inside the IDE
+  process, so MSSQLX shows up as a DriverID in the FireDAC connection editor
+  and design-time connections can be opened through it.
+
+  Must be built for Win32 -- the IDE is a 32-bit host and will not load a
+  Win64 design-time package.
+-------------------------------------------------------------------------------}
+
+package dclMSSQLXDriver;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'MSSQLX custom FireDAC driver for SQL Server (design-time)'}
+{$LIBSUFFIX AUTO}
+{$DESIGNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  designide,
+  MSSQLXDriver;
+
+contains
+  FireDAC.Phys.MSSQLXReg in '..\..\src\FireDAC.Phys.MSSQLXReg.pas';
+
+end.
