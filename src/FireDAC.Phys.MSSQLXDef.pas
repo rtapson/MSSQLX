@@ -126,7 +126,21 @@ type
     //
     // See the unit header: not inherited, and only meaningful because
     // BuildODBCConnectString now knows to read it.
-    property Server: String read GetServer write SetServer;
+    //
+    // stored False on every property below: without it, Delphi's DFM writer
+    // emits each one as its own top-level "Params.Xxx = ..." line, and those
+    // always stream BEFORE "Params.Strings" (list-content properties always
+    // stream last). Params.Strings is what carries DriverID, and Params only
+    // becomes this class -- the one that HAS a Server/OSAuthent/etc. property
+    // -- once DriverID has been applied. Read back in that order, "Params.
+    // Server = '.'" lands on the still-generic base Params object and fails
+    // with "Property Server does not exist" -- reproduced by
+    // demo\Vcl\SQLXDataModule.dfm, which streams cleanly once these are
+    // stored False and the redundant individual lines are stripped from the
+    // .dfm, leaving Values[] (via Strings) as the single source of
+    // persistence. The console demo (MSSQLXDemo.dpr) never hit this: it sets
+    // Params.DriverID in code before touching any typed property.
+    property Server: String read GetServer write SetServer stored False;
 
     // Same category as Server: not inherited, meaningless without the
     // matching BuildODBCConnectString support. Reads False whether OSAuthent
@@ -139,18 +153,18 @@ type
     // so. Set True for Windows-integrated auth; leave it and set UserName/
     // Password for SQL auth, which already worked correctly before this
     // property existed.
-    property OSAuthent: Boolean read GetOSAuthent write SetOSAuthent;
+    property OSAuthent: Boolean read GetOSAuthent write SetOSAuthent stored False;
 
     // Same True-only-injects pattern as OSAuthent. MARS_Connection is the
     // real ODBC keyword; MARS is the name used here to match how FireDAC's
     // own (non-ODBC) MSSQL driver refers to the same concept.
-    property MARS: Boolean read GetMARS write SetMARS;
+    property MARS: Boolean read GetMARS write SetMARS stored False;
 
     // ODBC Driver 18 for SQL Server defaults Encrypt=yes; Driver 17 defaulted
     // to no. Leaving this untouched means whichever driver is installed picks
     // its own default -- set True to require encryption explicitly, rather
     // than depending on which driver version happens to be on the machine.
-    property Encrypt: Boolean read GetEncrypt write SetEncrypt;
+    property Encrypt: Boolean read GetEncrypt write SetEncrypt stored False;
 
     // Security note, not a formality: this is encrypted-but-unauthenticated,
     // the standard way of quietly defeating what TLS is for. It exists to
@@ -159,26 +173,26 @@ type
     // not leaving this on. Never set it True as a reflex, and never in
     // anything that talks to a production server.
     property TrustServerCertificate: Boolean
-      read GetTrustServerCertificate write SetTrustServerCertificate;
+      read GetTrustServerCertificate write SetTrustServerCertificate stored False;
 
     // Reaches SQL Server as APP=, visible in sys.dm_exec_sessions.program_name
     // -- worth setting on any connection you might later need to find in a
     // session list or a DBA's query of who is connected.
     property ApplicationName: String
-      read GetApplicationName write SetApplicationName;
+      read GetApplicationName write SetApplicationName stored False;
 
     // Standard ODBC-base params (documented in FireDAC.Phys.MSSQLX's header),
     // exposed the same way MSAcc's own Def class exposes them.
-    property ODBCDriver: String read GetODBCDriver write SetODBCDriver;
-    property ODBCAdvanced: String read GetODBCAdvanced write SetODBCAdvanced;
-    property LoginTimeout: Integer read GetLoginTimeout write SetLoginTimeout;
+    property ODBCDriver: String read GetODBCDriver write SetODBCDriver stored False;
+    property ODBCAdvanced: String read GetODBCAdvanced write SetODBCAdvanced stored False;
+    property LoginTimeout: Integer read GetLoginTimeout write SetLoginTimeout stored False;
 
     // MSSQLX-specific, consumed by ApplySessionProfile.
-    property LockTimeout: Integer read GetLockTimeout write SetLockTimeout;
+    property LockTimeout: Integer read GetLockTimeout write SetLockTimeout stored False;
     property IsolationLevel: TFDMSSQLXIsolationLevel
-      read GetIsolationLevel write SetIsolationLevel;
+      read GetIsolationLevel write SetIsolationLevel stored False;
     property ApplySessionProfile: Boolean
-      read GetApplySessionProfile write SetApplySessionProfile;
+      read GetApplySessionProfile write SetApplySessionProfile stored False;
   end;
 
 implementation
