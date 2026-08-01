@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{26649108-304C-4771-A79F-68C57F839E25}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="MSSQLXDriver.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dclMSSQLXDriver.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="MSSQLXDriver">
+        <MSBuild Projects="MSSQLXDriver.dproj"/>
+    </Target>
+    <Target Name="MSSQLXDriver:Clean">
+        <MSBuild Projects="MSSQLXDriver.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MSSQLXDriver:Make">
+        <MSBuild Projects="MSSQLXDriver.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclMSSQLXDriver">
+        <MSBuild Projects="dclMSSQLXDriver.dproj"/>
+    </Target>
+    <Target Name="dclMSSQLXDriver:Clean">
+        <MSBuild Projects="dclMSSQLXDriver.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclMSSQLXDriver:Make">
+        <MSBuild Projects="dclMSSQLXDriver.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="MSSQLXDriver;dclMSSQLXDriver"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="MSSQLXDriver:Clean;dclMSSQLXDriver:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="MSSQLXDriver:Make;dclMSSQLXDriver:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

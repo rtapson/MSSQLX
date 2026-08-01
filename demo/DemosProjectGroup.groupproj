@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6AA10800-3ED9-4961-AC7D-2D7F07724BF1}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Vcl\MSSQLXDemoVcl.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Console\MSSQLXDemo.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="MSSQLXDemoVcl">
+        <MSBuild Projects="Vcl\MSSQLXDemoVcl.dproj"/>
+    </Target>
+    <Target Name="MSSQLXDemoVcl:Clean">
+        <MSBuild Projects="Vcl\MSSQLXDemoVcl.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MSSQLXDemoVcl:Make">
+        <MSBuild Projects="Vcl\MSSQLXDemoVcl.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MSSQLXDemo">
+        <MSBuild Projects="Console\MSSQLXDemo.dproj"/>
+    </Target>
+    <Target Name="MSSQLXDemo:Clean">
+        <MSBuild Projects="Console\MSSQLXDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MSSQLXDemo:Make">
+        <MSBuild Projects="Console\MSSQLXDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="MSSQLXDemoVcl;MSSQLXDemo"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="MSSQLXDemoVcl:Clean;MSSQLXDemo:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="MSSQLXDemoVcl:Make;MSSQLXDemo:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

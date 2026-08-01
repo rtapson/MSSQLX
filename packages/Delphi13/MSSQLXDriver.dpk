@@ -1,0 +1,59 @@
+{-------------------------------------------------------------------------------
+  MSSQLXDriver -- runtime package for the MSSQLX custom FireDAC driver.
+
+  Runtime-only. It carries the driver itself; the IDE-visible half lives in
+  dclMSSQLXDriver, which requires this one. Applications that want the driver
+  linked statically do not need this package at all -- referencing
+  FireDAC.Phys.MSSQLX from the .dpr uses clause is enough (see MSSQLXDemo.dpr).
+
+  The requires list was resolved against the shipped .dcp files rather than
+  guessed:
+    FireDAC.Phys.ODBCBase                    -> FireDACCommonOdbc
+    FireDAC.Phys.MSSQLMeta, .SQLGenerator    -> FireDACCommonDriver
+-------------------------------------------------------------------------------}
+
+package MSSQLXDriver;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'MSSQLX custom FireDAC driver for SQL Server (runtime)'}
+{$LIBSUFFIX AUTO}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  dbrtl,
+  FireDAC,
+  FireDACCommon,
+  FireDACCommonDriver,
+  FireDACCommonOdbc;
+
+contains
+  FireDAC.Phys.MSSQLX in '..\..\src\FireDAC.Phys.MSSQLX.pas',
+  FireDAC.Phys.MSSQLXDef in '..\..\src\FireDAC.Phys.MSSQLXDef.pas';
+
+end.
